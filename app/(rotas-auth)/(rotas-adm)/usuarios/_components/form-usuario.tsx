@@ -109,8 +109,8 @@ export default function FormUsuario({ isUpdating, user }: FormUsuarioProps) {
 							permissao: IPermissao,
 						},
 					});
-
 					toast.success('Usuário Atualizado', { description: resp.status });
+					document.getElementById('close-dialog-voltar')?.click();
 				}
 			} else {
 				const { email, login, nome, permissao } = values;
@@ -125,6 +125,7 @@ export default function FormUsuario({ isUpdating, user }: FormUsuarioProps) {
 				}
 				if (resp.ok) {
 					toast.success('Usuário Criado', { description: resp.status });
+					document.getElementById('close-dialog-voltar')?.click();
 				}
 			}
 		});
@@ -253,7 +254,7 @@ export default function FormUsuario({ isUpdating, user }: FormUsuarioProps) {
 						)}
 					/>
 					<div className='flex gap-2 items-center justify-end'>
-						<DialogClose asChild>
+						<DialogClose id="close-dialog-voltar" asChild>
 							<Button variant={'outline'}>Voltar</Button>
 						</DialogClose>
 						<Button
