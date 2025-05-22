@@ -1,7 +1,6 @@
 'use client'
 
-import smul_azul from "@/public/smul_azul.png"
-import smul_branco from "@/public/smul_branco.png";
+import sisar from "@/public/logo.png"
 import { useTheme } from "next-themes";
 import { useEffect, useState } from 'react';
 import Image from "next/image";
@@ -19,15 +18,15 @@ export default function Logo() {
         return <Image
             width={1200}
             height={1200}
-            src={"/asdasdasdas.png"}
-            alt="SMUL LOGO"
+            src={"/public/logo.png"}
+            alt="SISAR LOGO"
         />
     }
 
     return <Image
         width={1200}
         height={1200}
-        src={tema === "dark" ? smul_branco.src : smul_azul.src}
-        alt="SMUL LOGO"
+        src={sisar.src}
+        alt="SISAR LOGO"
     />
 }
