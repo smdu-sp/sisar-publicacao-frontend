@@ -22,6 +22,7 @@ import Logo from './logo';
 import { signIn } from 'next-auth/react';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 // import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
@@ -47,12 +48,23 @@ export function LoginForm() {
 		},
 	});
 
+	const router = useRouter()
+
 	async function onSubmit({ login, senha }: z.infer<typeof formSchema>) {
 		try {
-			const resp = await signIn('credentials', { login, senha });
+			const resp = await signIn('credentials', {
+				login,
+				senha,
+				redirect: false,
+			});
 			console.log(resp);
-			if (!resp?.ok) toast.error('Não foi possível realizar o login.');
-			else toast.success('Login realizado com sucesso.');
+			if (resp?.ok) {
+				toast.success('Login realizado com sucesso.');
+				router.push('/')
+			} else {
+				console.log(resp?.error);
+				toast.error('Não foi possível realizar o login.');
+			}
 		} catch (e) {
 			console.log(e);
 			toast.error('Não foi possível realizar o login.');

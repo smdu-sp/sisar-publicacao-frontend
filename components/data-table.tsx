@@ -33,63 +33,58 @@ export default function DataTable<TData, TValue>({
 		getCoreRowModel: getCoreRowModel(),
 	});
 	return (
-	
-			<div className='rounded-md'>
-				<Table className='bg-background dark:bg-muted/50 border'>
-					<TableHeader className='bg-primary hover:bg-primary'>
-						{table.getHeaderGroups().map((headerGroup) => (
+		<div className='rounded-md'>
+			<Table className='bg-background dark:bg-muted/50 border'>
+				<TableHeader className='bg-primary hover:bg-primary'>
+					{table.getHeaderGroups().map((headerGroup) => (
+						<TableRow
+							className='hover:bg-primary'
+							key={headerGroup.id}>
+							{headerGroup.headers.map((header) => {
+								return (
+									<TableHead
+										className='text-white text-xs text-nowrap'
+										key={header.id}>
+										{header.isPlaceholder
+											? null
+											: flexRender(
+													header.column.columnDef.header,
+													header.getContext(),
+											  )}
+									</TableHead>
+								);
+							})}
+						</TableRow>
+					))}
+				</TableHeader>
+				<TableBody>
+					{table.getRowModel().rows?.length ? (
+						table.getRowModel().rows.map((row) => (
 							<TableRow
-								className='hover:bg-primary'
-								key={headerGroup.id}>
-								{headerGroup.headers.map((header) => {
-									return (
-										<TableHead
-											className='text-white text-xs text-nowrap'
-											key={header.id}>
-											{header.isPlaceholder
-												? null
-												: flexRender(
-														header.column.columnDef.header,
-														header.getContext(),
-												  )}
-										</TableHead>
-									);
-								})}
+								className='px-4'
+								key={row.id}
+								data-state={row.getIsSelected() && 'selected'}>
+								{row.getVisibleCells().map((cell) => (
+									<TableCell
+										key={cell.id}
+										className='text-xs xl:text-sm px-4 text-nowrap font-light'>
+										{flexRender(cell.column.columnDef.cell, cell.getContext())}
+									</TableCell>
+								))}
 							</TableRow>
-						))}
-					</TableHeader>
-					<TableBody>
-						{table.getRowModel().rows?.length ? (
-							table.getRowModel().rows.map((row) => (
-								<TableRow
-									className='px-4'
-									key={row.id}
-									data-state={row.getIsSelected() && 'selected'}>
-									{row.getVisibleCells().map((cell) => (
-										<TableCell
-											key={cell.id}
-											className='text-sm px-4 text-nowrap font-light'>
-											{flexRender(
-												cell.column.columnDef.cell,
-												cell.getContext(),
-											)}
-										</TableCell>
-									))}
-								</TableRow>
-							))
-						) : (
-							<TableRow>
-								<TableCell
-									colSpan={columns.length}
-									className='h-24 text-center'>
-									Sem resultados.
-								</TableCell>
-							</TableRow>
-						)}
-					</TableBody>
-				</Table>
-			</div>
-		
+						))
+					) : (
+						<TableRow>
+							<TableCell
+								colSpan={columns.length}
+								className='h-24 text-center'>
+								Sem resultados.
+							</TableCell>
+						</TableRow>
+					)}
+				</TableBody>
+			</Table>
+		</div>
 	);
 }
 
