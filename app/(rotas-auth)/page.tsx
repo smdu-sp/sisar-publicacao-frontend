@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 import { columns } from './_components/columns';
 import { IPaginadoPublicacao, IPublicacao } from '@/types/publicacao';
 import ModalUpdateAndCreate from './_components/modal-update-create';
+import { colegiados, tipos_documento } from '@/lib/utils';
 
 export default async function PublicacoesSuspense({
 	searchParams,
@@ -29,7 +30,7 @@ async function Publicacoes({
 }) {
 	let { pagina = 1, limite = 10, total = 0 } = await searchParams;
 	let ok = false;
-	const { busca = '' } = await searchParams;
+	const { busca = '', tipo_documento = 'all', colegiado = 'all' } = await searchParams;
 	let dados: IPublicacao[] = [];
 
 	const session = await auth();
@@ -39,6 +40,8 @@ async function Publicacoes({
 			+pagina,
 			+limite,
 			busca as string,
+			tipo_documento as string,
+			colegiado as string
 		);
 		const { data } = response;
 		ok = response.ok;
@@ -67,6 +70,20 @@ async function Publicacoes({
 							tipo: 0,
 							placeholder: 'Digite o nome, email ou login',
 						},
+						{
+							nome: 'Tipo',
+							tag: 'tipo_documento',
+							tipo: 2,
+							default: 'all',
+							valores: tipos_documento,
+						},
+						{
+							nome: 'Colegiado',
+							tag: 'colegiado',
+							tipo: 2,
+							default: 'all',
+							valores: colegiados,
+						}
 					]}
 				/>
 				<DataTable

@@ -5,13 +5,22 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Colegiados, IPublicacao, Tipos_Documento } from '@/types/publicacao';
 import { format } from 'date-fns';
+import { capitalize, formataProcesso } from '@/lib/utils';
 
 
 
 export const columns: ColumnDef<IPublicacao>[] = [
 	{
 		accessorKey: 'numero_processo',
-		header: 'Processo',
+		header: () => <p className='text-left'>Processo</p>,
+		cell: ({ row }) => {
+			const processo = formataProcesso(row.original.numero_processo.padStart(12, '0'));
+			return (
+				<p className='flex text-left'>
+					{processo}
+				</p>
+			);
+		},
 	},
 	{
 		accessorKey: 'tipo_documento',
@@ -39,7 +48,9 @@ export const columns: ColumnDef<IPublicacao>[] = [
 		accessorKey: 'data_emissao',
 		header: () => <p className='text-center'>Emissão</p>,
 		cell: ({ row }) => {
-			const data_emissao = format(row.original.data_emissao, 'dd/MM/yyyy');
+			const dataOnly = row.original.data_emissao.toString().split('T')[0];
+			const dataSplit = dataOnly.split('-');
+			const data_emissao = `${dataSplit[2]}/${dataSplit[1]}/${dataSplit[0]}`;
 			return (
 				<div className='flex items-center justify-center'>
 					{data_emissao}
@@ -51,7 +62,9 @@ export const columns: ColumnDef<IPublicacao>[] = [
 		accessorKey: 'data_publicacao',
 		header: () => <p className='text-center'>Publicação</p>,
 		cell: ({ row }) => {
-			const data_publicacao = format(row.original.data_publicacao, 'dd/MM/yyyy');
+			const dataOnly = row.original.data_publicacao.toString().split('T')[0];
+			const dataSplit = dataOnly.split('-');
+			const data_publicacao = `${dataSplit[2]}/${dataSplit[1]}/${dataSplit[0]}`;
 			return (
 				<div className='flex items-center justify-center'>
 					{data_publicacao}
@@ -79,7 +92,7 @@ export const columns: ColumnDef<IPublicacao>[] = [
 			const nome = `${nomeSplit?.[0]} ${nomeSplit?.[nomeSplit.length - 1]}`;
 			return (
 				<div className='flex items-center justify-center'>
-					{nome ? nome : ""}
+					{nome ? capitalize(nome) : ""}
 				</div>
 			);
 		},

@@ -22,7 +22,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { cn } from '@/lib/utils';
+import { cn, colegiados, formataProcesso, tipos_documento } from '@/lib/utils';
 import { ITecnicoFuncionario, IUsuario } from '@/types/usuario';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon, Loader2 } from 'lucide-react';
@@ -37,7 +37,7 @@ import { FormCombobox } from '@/components/form-combobox';
 import * as publicacoes from '@/services/publicacoes';
 
 const formSchema = z.object({
-	numero_processo: z.string(),
+	numero_processo: z.string().min(16).max(19),
     tipo_documento: z.enum(['COMUNIQUESE', 'INDEFERIMENTO', 'DEFERIMENTO']),
 	colegiado: z.enum(['AR', 'RR', 'CEUSO', 'CAIEPS', 'CAEHIS', 'CPPU', 'CTLU']),
     tecnico_rf: z.string(),
@@ -87,7 +87,6 @@ export default function FormPublicacao({ isUpdating, publicacao, coordenadorias,
 				toast.success('Publicação criada com sucesso');
 			}
 		})
-		console.log(values)
 	}
 
 	return (
@@ -107,6 +106,9 @@ export default function FormPublicacao({ isUpdating, publicacao, coordenadorias,
 										<Input
 											placeholder='Número do processo'
 											{...field}
+											onChange={(e) => {
+												field.onChange(formataProcesso(e.target.value));
+											}}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -129,13 +131,9 @@ export default function FormPublicacao({ isUpdating, publicacao, coordenadorias,
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												<SelectItem value='AR'>Aprova Rápido</SelectItem>
-												<SelectItem value='RR'>Requalifica Rápido</SelectItem>
-												<SelectItem value='CEUSO'>CEUSO</SelectItem>
-												<SelectItem value='CAIEPS'>CAIEPS</SelectItem>
-												<SelectItem value='CAEHIS'>CAEHIS</SelectItem>
-												<SelectItem value='CPPU'>CPPU</SelectItem>
-												<SelectItem value='CTLU'>CTLU</SelectItem>
+												{colegiados.map(({ value, label }) => {
+													return <SelectItem value={value} key={value}>{label}</SelectItem>
+												})}
 											</SelectContent>
 										</Select>
 									</FormControl>
@@ -226,15 +224,9 @@ export default function FormPublicacao({ isUpdating, publicacao, coordenadorias,
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											<SelectItem value='COMUNIQUESE'>
-												Comunique-se
-											</SelectItem>
-											<SelectItem value='INDEFERIMENTO'>
-												Indeferimento
-											</SelectItem>
-											<SelectItem value='DEFERIMENTO'>
-												Deferimento
-											</SelectItem>
+											{tipos_documento.map(({ value, label }) => {
+												return <SelectItem value={value} key={value}>{label}</SelectItem>
+											})}
 										</SelectContent>
 									</Select>
 									<FormMessage />

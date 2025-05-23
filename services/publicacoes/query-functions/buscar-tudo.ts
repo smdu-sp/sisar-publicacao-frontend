@@ -7,11 +7,13 @@ export async function buscarTudo(
 	pagina: number = 1,
 	limite: number = 10,
 	busca: string = '',
+	tipo_documento: string = 'all',
+	colegiado: string = 'all',
 ): Promise<IRespostaPublicacao> {
 	const baseURL = process.env.NEXT_PUBLIC_API_URL;
 	try {
 		const publicacoes = await fetch(
-			`${baseURL}publicacoes/buscar-tudo?pagina=${pagina}&limite=${limite}&busca=${busca}`,
+			`${baseURL}publicacoes/buscar-tudo?pagina=${pagina}&limite=${limite}&busca=${busca}&tipo_documento=${tipo_documento}&colegiado=${colegiado}`,
 			{
 				method: 'GET',
 				headers: {
