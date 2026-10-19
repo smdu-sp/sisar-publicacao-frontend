@@ -55,7 +55,7 @@ export function DatePickerWithRange({
 					align='start'>
 					<Calendar
 						locale={ptBR}
-						initialFocus
+						autoFocus
 						mode='range'
 						defaultMonth={date?.from}
 						selected={date}

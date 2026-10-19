@@ -158,7 +158,7 @@ export default function FormPublicacao({ isUpdating, publicacao, coordenadorias,
 													mode="single"
 													selected={field.value}
 													onSelect={field.onChange}
-													initialFocus
+													autoFocus
 												/>
 											</PopoverContent>
 											</Popover>
@@ -192,7 +192,7 @@ export default function FormPublicacao({ isUpdating, publicacao, coordenadorias,
 													mode="single"
 													selected={field.value}
 													onSelect={field.onChange}
-													initialFocus
+													autoFocus
 												/>
 											</PopoverContent>
 											</Popover>
