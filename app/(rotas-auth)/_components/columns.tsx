@@ -48,7 +48,7 @@ export const columns: ColumnDef<IPublicacao>[] = [
 		accessorKey: 'data_emissao',
 		header: () => <p className='text-center'>Emissão</p>,
 		cell: ({ row }) => {
-			const dataOnly = row.original.data_emissao.toString().split('T')[0];
+			const dataOnly = new Date(row.original.data_emissao).toISOString().split('T')[0];
 			const dataSplit = dataOnly.split('-');
 			const data_emissao = `${dataSplit[2]}/${dataSplit[1]}/${dataSplit[0]}`;
 			return (
@@ -62,7 +62,7 @@ export const columns: ColumnDef<IPublicacao>[] = [
 		accessorKey: 'data_publicacao',
 		header: () => <p className='text-center'>Publicação</p>,
 		cell: ({ row }) => {
-			const dataOnly = row.original.data_publicacao.toString().split('T')[0];
+			const dataOnly = new Date(row.original.data_publicacao).toISOString().split('T')[0];
 			const dataSplit = dataOnly.split('-');
 			const data_publicacao = `${dataSplit[2]}/${dataSplit[1]}/${dataSplit[0]}`;
 			return (
