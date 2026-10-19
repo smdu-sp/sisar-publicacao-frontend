@@ -21,7 +21,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import * as usuario from '@/services/usuarios';
-import { IPermissao, IUsuario } from '@/types/usuario';
+import { IUsuario } from '@/types/usuario';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
@@ -54,8 +54,7 @@ export default function FormUsuario({ isUpdating, user }: FormUsuarioProps) {
 			email: user?.email || '',
 			login: user?.login || '',
 			nome: user?.nome || '',
-			permissao:
-				(user?.permissao as unknown as 'DEV' | 'TEC' | 'ADM' | 'USR') ?? 'USR',
+			permissao: user?.permissao ?? 'USR',
 		},
 	});
 
@@ -69,13 +68,8 @@ export default function FormUsuario({ isUpdating, user }: FormUsuarioProps) {
 	const { data: session, update } = useSession();
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		const token = session?.access_token;
-		if (!token) {
-			toast.error('Não autorizado');
-			return;
-		}
 		const { login } = values;
-		const resp = await usuario.buscarNovo(login, token);
+		const resp = await usuario.buscarNovo(login);
 
 		if (resp.error) {
 			toast.error('Algo deu errado', { description: resp.error });
@@ -94,7 +88,7 @@ export default function FormUsuario({ isUpdating, user }: FormUsuarioProps) {
 		startTransition(async () => {
 			if (isUpdating && user?.id) {
 				const resp = await usuario.atualizar(user?.id, {
-					permissao: values.permissao as unknown as IPermissao,
+					permissao: values.permissao,
 				});
 
 				if (resp.error) {
@@ -106,7 +100,7 @@ export default function FormUsuario({ isUpdating, user }: FormUsuarioProps) {
 						...session,
 						usuario: {
 							...session?.usuario,
-							permissao: IPermissao,
+							permissao: values.permissao,
 						},
 					});
 					toast.success('Usuário Atualizado', { description: resp.status });
@@ -118,7 +112,7 @@ export default function FormUsuario({ isUpdating, user }: FormUsuarioProps) {
 					email,
 					login,
 					nome,
-					permissao: permissao as unknown as IPermissao,
+					permissao,
 				});
 				if (resp.error) {
 					toast.error('Algo deu errado', { description: resp.error });

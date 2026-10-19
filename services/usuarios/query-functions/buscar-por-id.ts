@@ -1,48 +1,18 @@
 /** @format */
 
-import { IRespostaUsuario, IUsuario } from '@/types/usuario';
+'use server';
 
-export async function buscarPorId(
-	id: string,
-	access_token: string,
-): Promise<IRespostaUsuario> {
-	if (!id || id === '')
-		return {
-			ok: false,
-			error: 'Não foi possível buscar o usuário, ID vazio.',
-			data: null,
-			status: 400,
-		};
-	const baseURL = process.env.NEXT_PUBLIC_API_URL;
-	try {
-		const usuarios = await fetch(`${baseURL}usuarios/buscar-por-id/${id}`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${access_token}`,
-			},
-			next: { tags: ['user-by-id'] },
-		});
-		const data = await usuarios.json();
-		if (usuarios.status === 200)
-			return {
-				ok: true,
-				error: null,
-				data: data as IUsuario,
-				status: 200,
-			};
-		return {
-			ok: false,
-			error: data.message,
-			data: null,
-			status: data.statusCode,
-		};
-	} catch (error) {
-		return {
-			ok: false,
-			error: 'Não foi possível buscar o usuário:' + error,
-			data: null,
-			status: 400,
-		};
-	}
+import { IRespostaUsuario } from '@/types/usuario';
+import { requireSession, requirePermissao } from '@/lib/auth/permissoes';
+import { paraResposta } from '@/lib/resposta';
+import { BadRequestError } from '@/lib/errors';
+import * as usuariosDomain from '@/lib/domain/usuarios';
+
+export async function buscarPorId(id: string): Promise<IRespostaUsuario> {
+	return paraResposta(async () => {
+		if (!id || id === '') throw new BadRequestError('Não foi possível buscar o usuário, ID vazio.');
+		const session = await requireSession();
+		await requirePermissao(session, ['ADM']);
+		return usuariosDomain.buscarPorId(id);
+	});
 }

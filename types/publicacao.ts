@@ -1,20 +1,6 @@
-import { IUsuario } from "./usuario"
+export type Tipo_Documento = 'COMUNIQUESE' | 'INDEFERIMENTO' | 'DEFERIMENTO';
 
-export enum Tipo_Documento {
-  COMUNIQUESE = "Comunique-se",
-  INDEFERIMENTO = "Indeferimento",
-  DEFERIMENTO = "Deferimento"
-}
-
-export enum Colegiado {
-  AR = "Aprova Rápido",
-  RR = "Requalifica Rápido",
-  CEUSO = "CEUSO",
-  CAIEPS = "CAIEPS",
-  CAEHIS = "CAEHIS",
-  CPPU = "CPPU",
-  CTLU = "CTLU",
-}
+export type Colegiado = 'AR' | 'RR' | 'CEUSO' | 'CAIEPS' | 'CAEHIS' | 'CPPU' | 'CTLU';
 
 export const Tipos_Documento = {
   COMUNIQUESE: "Comunique-se",
@@ -37,15 +23,15 @@ export interface IPublicacao {
     numero_processo: string
     colegiado: Colegiado
     tipo_documento: Tipo_Documento
-    tecnico_id: string
+    tecnico_rf: string
     coordenadoria_id: string
     data_emissao: Date
     data_publicacao: Date
     prazo: number
     criadoEm: Date
     atualizadoEm: Date
-    tecnico?: IUsuario
-    coordenadoria?: any
+    tecnico?: { rf: string; nome: string }
+    coordenadoria?: { id: string; sigla: string | null; nome: string; codigo: string; status: boolean }
 }
 
 export interface ICreatePublicacao {

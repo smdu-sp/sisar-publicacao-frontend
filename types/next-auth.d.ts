@@ -4,7 +4,6 @@ import NextAuth from 'next-auth';
 
 declare module 'next-auth' {
 	interface Session {
-		id: string;
 		usuario: {
 			sub: string;
 			nome: string;
@@ -12,13 +11,8 @@ declare module 'next-auth' {
 			login: string;
 			email: string;
 			permissao: string;
-			status: number;
+			status: boolean;
 			avatar?: string;
-			iat: number;
-			exp: number;
 		};
-		access_token: string;
-		refresh_token: string;
 	}
 }
-import NextAuth, { type DefaultSession } from 'next-auth';

@@ -30,9 +30,9 @@ export default async function ModalUpdateAndCreate({
 	const tecnicosSelect: ITecnicoFuncionario[] = [];
 	const session = await auth();
 	if (!session) redirect('/login');
-	const coordenadoriasResposta = await coordenadorias.listaCompleta(session.access_token);
+	const coordenadoriasResposta = await coordenadorias.listaCompleta();
 	if (coordenadoriasResposta.ok) coordenadoriasSelect.push(...coordenadoriasResposta.data as ICoordenadoriaSelect[]);
-	const tecnicosResposta = await listaTecnicos(session.access_token);
+	const tecnicosResposta = await listaTecnicos();
 	if (tecnicosResposta.ok) tecnicosSelect.push(...tecnicosResposta.data as ITecnicoFuncionario[]);
 	return (
 		<Dialog>

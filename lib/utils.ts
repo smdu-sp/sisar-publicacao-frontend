@@ -5,6 +5,28 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function validaDigitoSei(sei: string): boolean {
+    var valido = false;
+    sei = sei && sei.toString().replace(/\D/g, '').substring(0, 16);
+    if (sei.length > 16) sei = sei.slice(-16);
+    if (sei.length === 16) {
+        sei = sei.toString().trim();
+        var soma = 0;
+        const verificador = [2, 3, 4, 5, 6, 7, 8, 9];
+        const digito = parseInt(sei[15]);
+        let j = 0;
+        for (let i = 14; i >= 0; i--) {
+          if (j === 8) j = 0;
+          soma += parseInt(sei[i]) * verificador[j];
+          j++;
+        }
+        soma = soma % 11;
+        soma = soma === 1 || soma === 0 ? 0 : 11 - soma;
+        valido = soma === digito;
+    } else return true;
+    return valido;
+}
+
 export function validaCPF_CNPJ(cpf_cnpj: string) {
   const cpfs_invalidos = ['00000000000', '11111111111', '22222222222', '33333333333', '44444444444', '55555555555', '66666666666', '77777777777', '88888888888', '99999999999'];
   const cnpjs_invalidos = ['00000000000000', '11111111111111', '22222222222222', '33333333333333', '44444444444444', '55555555555555', '66666666666666', '77777777777777', '88888888888888', '99999999999999'];

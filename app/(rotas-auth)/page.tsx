@@ -34,9 +34,8 @@ async function Publicacoes({
 	let dados: IPublicacao[] = [];
 
 	const session = await auth();
-	if (session && session.access_token) {
+	if (session) {
 		const response = await publicacao.buscarTudo(
-			session.access_token || '',
 			+pagina,
 			+limite,
 			busca as string,

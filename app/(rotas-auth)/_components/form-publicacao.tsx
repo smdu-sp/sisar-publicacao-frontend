@@ -26,7 +26,6 @@ import { cn, colegiados, formataProcesso, tipos_documento } from '@/lib/utils';
 import { ITecnicoFuncionario, IUsuario } from '@/types/usuario';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CalendarIcon, Loader2 } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -70,14 +69,7 @@ export default function FormPublicacao({ isUpdating, publicacao, coordenadorias,
 		},
 	});
 
-	const { data: session } = useSession();
-
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		const token = session?.access_token;
-		if (!token) {
-			toast.error('Não autorizado');
-			return;
-		}
 		startTransition(async () => {
 			const response = await publicacoes.criar(values);
 			if (response.error) {

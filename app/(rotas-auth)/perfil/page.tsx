@@ -22,7 +22,7 @@ export default async function Perfil() {
 		redirect('/login');
 	}
 
-	const data = await buscarMeuUsuario(session?.access_token);
+	const data = await buscarMeuUsuario();
 	const { data: user, ok, error } = data;
 	if (!ok || !user) {
 		console.log(error);

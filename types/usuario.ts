@@ -6,20 +6,15 @@ export interface IUsuario {
 	login: string;
 	email: string;
 	permissao: IPermissao;
-	avatar?: string;
+	avatar?: string | null;
 	status: boolean;
 	ultimoLogin: Date;
 	criadoEm: Date;
 	atualizadoEm: Date;
-	nomeSocial?: string;
+	nomeSocial?: string | null;
 }
 
-export enum IPermissao {
-	DEV,
-	TEC,
-	ADM,
-	USR,
-}
+export type IPermissao = 'DEV' | 'TEC' | 'ADM' | 'USR';
 
 export interface ICreateUsuario {
 	nome: string;
@@ -85,8 +80,6 @@ export interface IUsuarioSession {
 	email: string;
 	nomeSocial?: string;
 	permissao: IPermissao;
-	status: number;
+	status: boolean;
 	avatar?: string;
-	iat: number;
-	exp: number;
 }

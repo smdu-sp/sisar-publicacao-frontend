@@ -33,9 +33,8 @@ async function Usuarios({
 	let dados: IUsuario[] = [];
 
 	const session = await auth();
-	if (session && session.access_token) {
+	if (session) {
 		const response = await usuario.buscarTudo(
-			session.access_token || '',
 			+pagina,
 			+limite,
 			busca as string,
